@@ -1,3 +1,54 @@
-<p>
-  user works!
-</p>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span><img src="./assets/boom.png"></span>
+    <span class="example-fill-remaining-space"></span>
+    <span class="example-spacer"></span>
+
+    <button mat-button>About</button>
+    <button mat-button>Contact</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<h2>User List</h2>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef> UserName</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="password">
+      <mat-header-cell *matHeaderCellDef> Password</mat-header-cell>
+      <mat-cell *matCellDef="let element"> ******** </mat-cell>
+    </ng-container>
+
+	<ng-container matColumnDef="enabled">
+      <mat-header-cell *matHeaderCellDef> Enabled</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.enabled}} </mat-cell>
+    </ng-container>
+
+	<ng-container matColumnDef="roles">
+      <mat-header-cell *matHeaderCellDef> Roles</mat-header-cell>
+      <mat-cell *matCellDef="let element"> 
+	      <p *ngFor="let role of element.roles; let isLast=last" >
+	      	{{role.name}}{{isLast ? '' : ', '}}
+	      </p>
+      </mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>
+      	<button mat-stroked-button color="" [routerLink]="['/user-add']">Add</button>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+      	<button mat-stroked-button color="primary" [routerLink]="['/user-edit', element.id]">Edit</button>&nbsp;
+      	<button mat-stroked-button color="warn" [routerLink]="['/user-edit', element.id]">Delete</button>
+      </mat-cell>
+    </ng-container>
+    
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
