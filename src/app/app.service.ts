@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {User} from './user/user.model';
+import {Role} from './user/role.model';
 import {Account} from './account/account.model';
 
 const httpOptions = {
@@ -14,28 +15,30 @@ export class UserService {
   constructor(private http: HttpClient) {}
   
   private userApiUrl = 'http://localhost:8080/edm/api/users';
-  private userUrl = "http://localhost:8080/edm/users"
-  private roleUrl = 'http://localhost:8080/edm/api/roles';
+  private userUrl = 'http://localhost:8080/edm/users';
+  private roleApiUrl = 'http://localhost:8080/edm/api/roles';
+  private roleUrl = 'http://localhost:8080/edm/roles/';
   
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.userApiUrl);
   }
   
   public get(id: string) {
-    return this.http.get(this.userUrl + "/" + id);
+    return this.http.get(this.userApiUrl + "/" + id);
   }
   
   public save(user: any): Observable<any> {
     let result: Observable<Object>;
-    if (user['href'] == null) {
-      console.log("ADDING - ");
-      console.log(user);
-      result = this.http.post(this.userUrl, user);
-    }
-    else {
+    
+    if (user.id) {
       console.log("EDITING");
       console.log(user);
-      result = this.http.put(user.href, user);
+      result = this.http.put(this.userApiUrl + "/" + user.id, user);
+    }
+    else {
+      console.log("ADDING - ");
+      console.log(user);
+      result = this.http.post(this.userApiUrl, user);
     }
     return result;
   }
@@ -44,12 +47,20 @@ export class UserService {
     return this.http.delete(href);
   }
   
-  public getRoles(): Observable<User[]> {
-    return this.http.get<User[]>(this.roleUrl);
+  public deleteUser(user: User) {
+    return this.http.delete(this.userUrl + "/" + user.id);
+  }
+  
+  public getRoles(): Observable<Role[]> {
+    return this.http.get<Role[]>(this.roleApiUrl);
+  }
+    
+  public getUserRoles(id: string) {
+    return this.http.get(this.userApiUrl+"/" + id + "/roles");
   }
   
   public getRole(id: string) {
-    return this.http.get(this.roleUrl + "/" + id);
+    return this.http.get(this.roleApiUrl + "/" + id);
   }
 }
 

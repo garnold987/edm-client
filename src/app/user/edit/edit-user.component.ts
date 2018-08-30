@@ -1,73 +1,76 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../../app.service';
-import { NgForm } from '@angular/forms';
+import { User } from '../user.model';
+import { Role } from '../role.model';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { first } from "rxjs/operators";
 
 @Component({
-  selector: 'app-user-edit',
+  selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
 })
-export class UserEditComponent implements OnInit, OnDestroy {
+export class EditUserComponent implements OnInit {
   
-  user: any = {};
+  user: User;
+  referenceRoles: Role[];
+  editForm: FormGroup;
   
-  roles: Array<any>;
-  
-  sub: Subscription;
-  
-  constructor(private route: ActivatedRoute,
-              private router: Router, 
-              private userService: UserService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private userService: UserService) {
   }
+  
+  private userApiUrl = 'http://localhost:8080/edm/api/users';
   
   ngOnInit() {
     
-    this.sub = this.route.params.subscribe(params => {
-      const id = params['id'];
-      this.userService.getRoles().subscribe(
-        data => {
-          console.log(data);
-          this.roles = data;
-        }
-      );
-      if (id) {
-        this.userService.get(id).subscribe((user: any) => {
-          if(user) {
-            this.user = user;
-            console.log(this.user);
-            console.log(this);
-            this.user.href = user._links.self.href;
-          }
-          else {
-            console.log(`User with id '${id}' not found, returning to list`);
-            this.gotoList();
-          }
-        });
-      }
+    let userId = localStorage.getItem("editUserId");
+    if(!userId) {
+      alert("Invalid Action.");
+      this.gotoList();
+      return;
+    }
+    
+    this.editForm = this.formBuilder.group({
+      id: [],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      enabled: [],
+      roles: []
     });
+    
+    this.userService.get(userId).subscribe(data => {
+      console.log(data);
+      this.editForm.setValue(data);
+    });
+    
+    this.userService.getRoles().subscribe(data => {
+      console.log("ROLES - " + JSON.stringify(data));
+      this.referenceRoles = data;
+    });
+    
+    
+    console.log("this.referenceRoles => " + this.referenceRoles);
+    console.log("editForm.value.roles => " + this.editForm.value.roles);
+    
   }
   
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
   
   gotoList() {
     this.router.navigate(['/user']);
   }
   
-  save(form: NgForm) {
-    console.log(JSON.stringify(form));
-    this.userService.save(form).subscribe(result => {
-      this.gotoList();
-    }, error => console.error(error))
+  onSubmit() {
+    this.userService.save(this.editForm.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.gotoList();
+        }, 
+        error => {
+          alert(error);
+          console.log(error);
+        });
   }
   
-  remove(href) {
-    console.log(href);
-    this.userService.remove(href).subscribe(result => {
-      this.gotoList();
-    }, error => console.error(error))
-  }
 }

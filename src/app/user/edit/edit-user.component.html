@@ -1,49 +1,51 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span><img src="./assets/boom.png"></span>
-    <span class="example-fill-remaining-space"></span>
-    <span class="example-spacer"></span>
+<div class="col-md-6">
+	<h2 class="text-center">Edit User</h2>
+	<form [formGroup]="editForm" (ngSubmit)="onSubmit()">
 
-    <button mat-button>About</button>
-    <button mat-button>Contact</button>
-  </mat-toolbar-row>
-</mat-toolbar>
-
-<mat-card>
-	<form #userForm="ngForm" (ngSubmit)="save(userForm.value)">
-		<mat-card-header>
-			<mat-card-title><h2>{{user.username ? 'Edit' : 'Add'}} User</h2></mat-card-title>
-		</mat-card-header>
-		<mat-card-content>
-			<input type="hidden" name="href" [(ngModel)]="user.href">
-			<mat-form-field>
-				<input matInput placeholder="User Name" [(ngModel)]="user.username"
-					   required name="username" #username>
-			</mat-form-field>
-			<mat-form-field>
-				<input type="password" matInput placeholder="Password" [(ngModel)]="user.password"
-					   required name="password" #password>
-			</mat-form-field>
-			<mat-form-field>
-				<mat-select matInput name="enabled" [(ngModel)]="user.enabled" placeholder="Enabled">
-					<mat-option [value]="true">Yes</mat-option>
-					<mat-option [value]="false">No</mat-option>
-				</mat-select>
-			</mat-form-field>
-			<mat-form-field>
-				<mat-select matInput name="roles" [(ngModel)]="user.roles" placeholder="Select Roles" multiple>
-					<mat-option *ngFor="let role of roles" [value]="role.id">
-						{{role.name}}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
-		</mat-card-content>
-		<mat-card-actions>
-			<button mat-raised-button color="primary" type="submit"
-					[disabled]="!userForm.form.valid">Save</button>
-			<button mat-raised-button color="warn" (click)="remove(user.href)"
-					*ngIf="user.href" type="button">Delete</button>
-			<a mat-button routerLink="/user">Cancel</a>
-		</mat-card-actions>		
+		<div class="form-group row">
+		  <label for="username" class="col-sm-2 col-form-label">Username:</label>
+		  <div class="col-sm-10">
+		    <input type="text" formControlName="username" placeholder="User Name" name="username" class="form-control" id="username">
+		  </div>
+		</div>
+		<div class="form-group row">
+		  <label for="password" class="col-sm-2 col-form-label">Password:</label>
+		  <div class="col-sm-10">
+		    <input type="password" formControlName="password" class="form-control" name="password" id="password" placeholder="Password">
+		  </div>
+		</div>
+		<div class="form-group row">
+		    <div class="col-sm-2">
+		    	<label class="form-check-label" for="roles">Enabled:</label>
+		    </div>
+		    <div class="col-sm-10">
+		      <div class="form-check">
+		        <input class="form-check-input" type="checkbox" [formControlName]="enabled" id="enabled" name="enabled">
+		        
+		      </div>
+		    </div>
+		</div>
+		<fieldset class="form-group">
+	    	<div class="row">
+		      <div class="col-sm-2">
+		    	<label class="form-check-label" for="enabled">Roles:</label>
+		      </div>
+		      <div class="col-sm-10">
+		        <div *ngFor="let role of referenceRoles" class="form-check">
+		          <input class="form-check-input" type="checkbox" [formControlName]="roles" [id]="roles" value="{{role.id}}">
+		          <label class="form-check-label checkbox-text" for="roles">{{role.name}}</label>
+		        </div>
+		      </div>
+		    </div>
+		</fieldset>
+		<div class="form-group row">
+			<div class="col-sm-10">
+		      <button class="btn btn-success">Update</button>
+		      <button class="btn" (click)="gotoList()" style="margin-left: 20px;">Cancel</button>
+		    </div>
+		</div>
+<pre>{{editForm.value | json}}</pre>
+<!-- <pre>{{editForm.value.roles | json}}</pre>-->
+<pre>{{roles | json}}</pre>		
 	</form>
-</mat-card>
+</div>

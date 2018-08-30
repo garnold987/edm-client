@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {MatTableDataSource} from '@angular/material';
 import {Account} from './account.model';
 import {AccountService} from '../app.service';
 import {Router} from '@angular/router';
@@ -11,7 +10,6 @@ import {Router} from '@angular/router';
 })
 export class AccountComponent implements OnInit {
   displayedColumns = ['name', 'owner'];
-  dataSource = new MatTableDataSource();
   accounts: Array<any>;
   constructor(private router: Router, private accountService: AccountService) {
   }
@@ -21,7 +19,6 @@ export class AccountComponent implements OnInit {
         console.log(data);
         console.log(data);
         this.accounts = data;
-        this.dataSource.data = data;
       }
     );
   }
