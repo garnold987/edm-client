@@ -10,6 +10,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
 import { UserComponent } from './user/user.component';
 import { EditUserComponent } from './user/edit/edit-user.component';
+import { AddUserComponent } from './user/add/add-user.component';
 import { AccountComponent } from './account/account.component';
 
 
@@ -24,7 +25,8 @@ import {ErrorDialogComponent} from './core/error-dialog.component';
     LoginComponent,
     AccountComponent,
     UserComponent,
-    EditUserComponent,
+    AddUserComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,

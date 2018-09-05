@@ -7,15 +7,15 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray, ReactiveFor
 import { first } from "rxjs/operators";
 
 @Component({
-  selector: 'app-edit-user',
-  templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.css']
+  selector: 'app-add-user',
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.css']
 })
-export class EditUserComponent implements OnInit {
+export class AddUserComponent implements OnInit {
   
   user: User;
   referenceRoles: Role[];
-  editForm: FormGroup;
+  addForm: FormGroup;
   
   constructor(private formBuilder: FormBuilder, private router: Router, private userService: UserService) {
   }
@@ -24,33 +24,12 @@ export class EditUserComponent implements OnInit {
   
   ngOnInit() {
     
-    let userId = localStorage.getItem("editUserId");
-    if(!userId) {
-      alert("Invalid Action.");
-      this.gotoList();
-      return;
-    }
-    
-    this.editForm = this.formBuilder.group({
+    this.addForm = this.formBuilder.group({
       id: [],
       username: ['', Validators.required],
-      password: [],
+      password: ['', Validators.required],
       enabled: [],
       roles: this.formBuilder.array([])
-    });
-    
-    this.userService.get(userId).subscribe(data => {
-      
-      const formArray = this.editForm.get('roles') as FormArray;
-      var rs = data['roles'];
-      for(var i = 0; i < rs.length; i++) {
-        formArray.push(new FormControl(rs[i]['id']));
-      }
-      this.editForm.controls.id.setValue(data['id']);
-      this.editForm.controls.username.setValue(data['username']);
-      this.editForm.controls.password.setValue(data['password']);
-      this.editForm.controls.enabled.setValue(data['enabled']);
-      this.editForm.controls.roles = formArray;
     });
     
     this.userService.getRoles().subscribe(data => {
@@ -66,7 +45,7 @@ export class EditUserComponent implements OnInit {
   
   onSubmit() {
     
-    const roles = this.editForm.get('roles') as FormArray;
+    const roles = this.addForm.get('roles') as FormArray;
     
     for(var i = 0; i < roles.length; i ++) {
       
@@ -83,7 +62,7 @@ export class EditUserComponent implements OnInit {
       
     }
     
-    this.userService.save(this.editForm.value)
+    this.userService.save(this.addForm.value)
       .pipe(first())
       .subscribe(
         data => {
@@ -95,7 +74,7 @@ export class EditUserComponent implements OnInit {
   }
   
    onChange(event) {
-    const roles = this.editForm.get('roles') as FormArray;
+    const roles = this.addForm.get('roles') as FormArray;
 
     if(event.srcElement.checked) {
       roles.push(new FormControl(parseInt(event.srcElement.value)));

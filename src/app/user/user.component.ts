@@ -23,15 +23,10 @@ export class UserComponent implements OnInit {
     );
   }
   
-  gotoList() {
-    this.router.navigate(['/user']);
-  }
-  
-  
   deleteUser(user: User): void {
     console.log(user);
     this.userService.deleteUser(user).subscribe(result => {
-      this.gotoList();
+      this.ngOnInit();
     }, error => console.error(error))
   }
   

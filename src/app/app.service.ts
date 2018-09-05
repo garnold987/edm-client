@@ -31,13 +31,9 @@ export class UserService {
     let result: Observable<Object>;
     
     if (user.id) {
-      console.log("EDITING");
-      console.log(user);
       result = this.http.put(this.userApiUrl + "/" + user.id, user);
     }
     else {
-      console.log("ADDING - ");
-      console.log(user);
       result = this.http.post(this.userApiUrl, user);
     }
     return result;
@@ -59,8 +55,15 @@ export class UserService {
     return this.http.get(this.userApiUrl+"/" + id + "/roles");
   }
   
-  public getRole(id: string) {
-    return this.http.get(this.roleApiUrl + "/" + id);
+  async getRole (id: string) {
+    var result;
+    if (typeof result === 'undefined') 
+    {
+      result = await this.http.get(this.roleApiUrl + "/" + id)
+        .toPromise()
+        .then(res => res as Role);
+    }
+    return result;
   }
 }
 
