@@ -23,13 +23,12 @@ export class AddUserComponent implements OnInit {
   private userApiUrl = 'http://localhost:8080/edm/api/users';
   
   ngOnInit() {
-    
+
     this.addForm = this.formBuilder.group({
-      id: [],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      enabled: [],
-      roles: this.formBuilder.array([])
+       username: ["", [Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
+       password: ["", [Validators.required, Validators.minLength(8)]],
+       enabled: [""],
+       roles: this.formBuilder.array([])
     });
     
     this.userService.getRoles().subscribe(data => {
@@ -38,6 +37,10 @@ export class AddUserComponent implements OnInit {
     
   }
   
+  get username() { return this.addForm.get("username"); }
+  get password() { return this.addForm.get("password"); }
+  get enabled() { return this.addForm.get("enabled"); }
+  get roles() { return this.addForm.get("roles"); }
   
   gotoList() {
     this.router.navigate(['/user']);

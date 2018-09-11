@@ -26,16 +26,16 @@ export class EditUserComponent implements OnInit {
     
     let userId = localStorage.getItem("editUserId");
     if(!userId) {
-      alert("Invalid Action.");
+      console.log("Invalid Action - No User Id Found");
       this.gotoList();
       return;
     }
     
     this.editForm = this.formBuilder.group({
       id: [],
-      username: ['', Validators.required],
-      password: [],
-      enabled: [],
+      username: ["", [Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
+      password: ["", [Validators.required, Validators.minLength(8)]],
+      enabled: [""],
       roles: this.formBuilder.array([])
     });
     
@@ -59,6 +59,10 @@ export class EditUserComponent implements OnInit {
     
   }
   
+  get username() { return this.editForm.get("username"); }
+  get password() { return this.editForm.get("password"); }
+  get enabled() { return this.editForm.get("enabled"); }
+  get roles() { return this.editForm.get("roles"); }
   
   gotoList() {
     this.router.navigate(['/user']);

@@ -17,14 +17,14 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUsers().subscribe(
       data => {
-        console.log(data);
+//        console.log(data);
         this.users = data;
       }
     );
   }
   
   deleteUser(user: User): void {
-    console.log(user);
+//    console.log(user);
     this.userService.deleteUser(user).subscribe(result => {
       this.ngOnInit();
     }, error => console.error(error))
