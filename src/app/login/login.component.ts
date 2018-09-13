@@ -1,38 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {first} from "rxjs/operators";
+import {Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../core/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  submitted: boolean = false;
-  invalidLogin: boolean = false;
   
-  constructor(private formBuilder: FormBuilder, private router : Router) {
-  }
-
-  onSubmit() {
-    this.submitted = true;
-    if(this.loginForm.invalid) {
-      return;
-    }
-    if(this.loginForm.controls.username.value == 'admin' && this.loginForm.controls.password.value == 'admin'){
-      this.router.navigate(["user"]);
-    }else {
-      this.invalidLogin = true;
-    }
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService) {
   }
   
-  ngOnInit() {
+   ngOnInit() {
+    
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]      
+      username: ["", [Validators.required]],
+      password: ["", [Validators.required]],
     });
   }
+
+  get username() { return this.loginForm.get("username"); }
+  get password() { return this.loginForm.get("password"); }
+
+  login(): void {
+    
+    this.authService.login(this.username.value, this.password.value);
+    this.router.navigate(['/user']);
+  }
+
 }

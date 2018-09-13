@@ -1,1 +1,36 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item">
+        EDM Example
+      </a>
+    </div>
+
+    <div id="navbarMenuHeroA" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" [routerLink]="['']">
+          Home
+        </a>
+        <a class="navbar-item" [routerLink]="['/login']">
+          Login
+        </a>
+        <a class="navbar-item" [routerLink]="['/user']">
+          Users
+        </a>
+        <a class="navbar-item" [routerLink]="['/logout']">
+          Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
 <router-outlet></router-outlet>
+
+<footer class="footer">
+  <div class="container has-text-centered">
+    <div class="content">
+      www.devacuda.com
+    </div>
+  </div>
+</footer>

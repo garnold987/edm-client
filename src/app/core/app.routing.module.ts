@@ -5,14 +5,19 @@ import {AddUserComponent} from "../user/add/add-user.component";
 import {EditUserComponent} from "../user/edit/edit-user.component";
 import {AccountComponent} from "../account/account.component";
 import {LoginComponent} from "../login/login.component";
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  { path: 'user', component: UserComponent},
+  { path: 'user', component: UserComponent,
+        canActivate: [
+            AuthGuard
+        ]},
   { path: 'add-user', component: AddUserComponent },
   { path: 'edit-user', component: EditUserComponent },
   { path: 'account', component: AccountComponent },
   { path: 'login', component: LoginComponent },
-  { path : '', component : LoginComponent}
+  { path : '', component : LoginComponent},
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
