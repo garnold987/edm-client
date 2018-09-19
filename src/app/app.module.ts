@@ -8,7 +8,9 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import {AuthService} from './core/auth.service';
 import {Interceptor} from './core/interceptor';
-import {AuthGuard} from './core/auth.guard';
+import {TokenStorage} from "./core/token.storage";
+import {AuthGuard} from "./core/auth.guard";
+import {RoleGuard} from "./core/role.guard";
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -19,6 +21,7 @@ import { AccountComponent } from './account/account.component';
 
 import {UserService} from './app.service';
 import {AccountService} from './app.service';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,8 @@ import {AccountService} from './app.service';
     AccountComponent,
     UserComponent,
     AddUserComponent,
-    EditUserComponent
+    EditUserComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,7 @@ import {AccountService} from './app.service';
     HttpClientModule,
     HttpModule
   ],
-  providers: [UserService, AccountService, AuthService, AuthGuard,
+  providers: [UserService, AccountService, AuthService, TokenStorage, AuthGuard, RoleGuard,
     {provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
       multi: true}

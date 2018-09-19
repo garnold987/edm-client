@@ -15,6 +15,27 @@
 		  </div>
 		</div>
 		<div class="form-group row">
+		  <label for="realname" class="col-sm-2 col-form-label">Name:</label>
+		  <div class="col-sm-10">
+		    <input type="text" formControlName="realname" placeholder="Name" name="realname" class="form-control" id="realname" required>
+		    <div class="text-danger"
+		    	*ngIf="realname.invalid && (realname.dirty || realname.touch)" >
+	      	  <p *ngIf="realname.errors.required">Name is required.</p>
+	      	</div>
+		  </div>
+		</div>
+		<div class="form-group row">
+		  <label for="email" class="col-sm-2 col-form-label">E-mail:</label>
+		  <div class="col-sm-10">
+		    <input type="text" formControlName="email" placeholder="Name" name="email" class="form-control" id="email" required>
+		    <div class="text-danger"
+		    	*ngIf="email.invalid && (email.dirty || email.touch)" >
+	      	  <p *ngIf="email.errors.required">E-mail is required.</p>
+	      	  <p *ngIf="email.errors.email">Invalid E-mail.</p>
+	      	</div>
+		  </div>
+		</div>
+		<div class="form-group row">
 		  <label for="password" class="col-sm-2 col-form-label">Password:</label>
 		  <div class="col-sm-10">
 		    <input type="password" formControlName="password" class="form-control" name="password" id="password" placeholder="Password">
@@ -57,8 +78,5 @@
 		      <button class="btn" (click)="gotoList()" style="margin-left: 20px;">Cancel</button>
 		    </div>
 		</div>
-<!-- <pre>{{editForm.value | json}}</pre>-->
-<!-- <pre>{{editForm.value.roles | json}}</pre>-->
-<!-- <pre>{{referenceRoles | json}}</pre>		-->
 	</form>
 </div>

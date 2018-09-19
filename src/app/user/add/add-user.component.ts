@@ -27,6 +27,8 @@ export class AddUserComponent implements OnInit {
     this.addForm = this.formBuilder.group({
        username: ["", [Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
        password: ["", [Validators.required, Validators.minLength(8)]],
+       realname: ["", [Validators.required]],
+       email: ["", [Validators.required, Validators.email]],
        enabled: [""],
        roles: this.formBuilder.array([])
     });
@@ -38,6 +40,8 @@ export class AddUserComponent implements OnInit {
   }
   
   get username() { return this.addForm.get("username"); }
+  get realname() { return this.addForm.get("realname"); }
+  get email() { return this.addForm.get("email"); }
   get password() { return this.addForm.get("password"); }
   get enabled() { return this.addForm.get("enabled"); }
   get roles() { return this.addForm.get("roles"); }

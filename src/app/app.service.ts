@@ -8,6 +8,9 @@ import {Account} from './account/account.model';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+const httpDelOptions = {
+  headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
+};
 
 @Injectable()
 export class UserService {
@@ -44,7 +47,7 @@ export class UserService {
   }
   
   public deleteUser(user: User) {
-    return this.http.delete(this.userUrl + "/" + user.id);
+    return this.http.delete(this.userApiUrl + "/" + user.id, httpDelOptions);
   }
   
   public getRoles(): Observable<Role[]> {

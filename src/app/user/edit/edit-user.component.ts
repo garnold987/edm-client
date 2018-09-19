@@ -35,6 +35,8 @@ export class EditUserComponent implements OnInit {
       id: [],
       username: ["", [Validators.required, Validators.minLength(3),Validators.maxLength(15)]],
       password: ["", [Validators.required, Validators.minLength(8)]],
+      realname: ["", [Validators.required]],
+      email: ["", [Validators.required, Validators.email]],
       enabled: [""],
       roles: this.formBuilder.array([])
     });
@@ -48,6 +50,8 @@ export class EditUserComponent implements OnInit {
       }
       this.editForm.controls.id.setValue(data['id']);
       this.editForm.controls.username.setValue(data['username']);
+      this.editForm.controls.realname.setValue(data['name']);
+      this.editForm.controls.email.setValue(data['email']);
       this.editForm.controls.password.setValue(data['password']);
       this.editForm.controls.enabled.setValue(data['enabled']);
       this.editForm.controls.roles = formArray;
@@ -60,6 +64,8 @@ export class EditUserComponent implements OnInit {
   }
   
   get username() { return this.editForm.get("username"); }
+  get realname() { return this.editForm.get("realname"); }
+  get email() { return this.editForm.get("email"); }
   get password() { return this.editForm.get("password"); }
   get enabled() { return this.editForm.get("enabled"); }
   get roles() { return this.editForm.get("roles"); }

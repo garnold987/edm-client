@@ -1,21 +1,23 @@
-<div class="col-md-6">
+<div class="col-md-8">
 	<h2>User List</h2>
 	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th class="hidden">Id</th>
-				<th>User</th>
-				<th>Password</th>
+				<th>Username</th>
+				<th>Name</th>
+				<th>E-mail</th>
 				<th>Enabled</th>
 				<th>Roles</th>
-				<th><button class="btn btn-info" (click)="addUser()"> Add User</button></th>
+				<th><button *ngIf="this.token.hasRole('ROLE_ADMIN') || this.token.hasRole('ROLE_MANAGER')" class="btn btn-info" (click)="addUser()"> Add User</button></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let user of users">
 				<td class="hidden">{{user.id}}</td>
 				<td>{{user.username}}</td>
-				<td>********</td>
+				<td>{{user.name}}</td>
+				<td>{{user.email}}</td>
 				<td>{{user.enabled}}</td>
 				<td>
 					<span *ngFor="let role of user.roles; let isLast=last" >
@@ -23,8 +25,8 @@
 				    </span>
 				</td>
 				<td>
-					<button class="btn btn-primary" (click)="editUser(user)"> Edit</button>
-					<button class="btn btn-danger" (click)="deleteUser(user)" style="margin-left: 20px;"> Delete</button>
+					<button *ngIf="this.token.hasRole('ROLE_ADMIN') || this.token.hasRole('ROLE_MANAGER')" class="btn btn-primary" (click)="editUser(user)"> Edit</button>
+					<button *ngIf="this.token.hasRole('ROLE_ADMIN')" class="btn btn-danger" (click)="deleteUser(user)" style="margin-left: 20px;"> Delete</button>
 				</td>
 			</tr>
 		</tbody>
